@@ -80,3 +80,7 @@ O comando acima treina o modelo, sobe a API e inicia a aplicação Streamlit. Ac
 │   └── requirements.txt
 └── docker-compose.yml
 ```
+
+## Aplicação
+
+**https://tech-challenge-4-hgqezrudhakanpuztvy9da.streamlit.app/**
