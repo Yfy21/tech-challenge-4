@@ -85,7 +85,7 @@ with st.form('prediction_form'):
         smoke = st.selectbox('É fumante?',
                              ['Sim', 'Não'])
         mtrans = st.selectbox('Qual é o seu principal meio de transporte?',
-                              ['Carro', 'Moto', 'Bicicleta', 'Transporte público', 'A pé'])
+                              ['Carro', 'Moto', 'Transporte público', 'A pé', 'Bicicleta'])
 
     with col2:
         ncp = st.selectbox('Quantas refeições você faz por dia? ("lanchinhos" não contam)',
