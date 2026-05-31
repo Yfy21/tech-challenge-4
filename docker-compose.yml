@@ -29,7 +29,7 @@ services:
        training:
          condition: service_completed_successfully
        api:
-         condition: service_started
+         condition: service_healthy
      volumes:
        - model_artifacts:/model
        - ./data:/data
