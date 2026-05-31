@@ -1,0 +1,16 @@
+# Directories excluded from submission
+/eda/
+/documentation/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE
+.idea/
+
+# Scratch files
+project docker compose.txt
