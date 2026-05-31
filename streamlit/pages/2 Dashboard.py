@@ -135,7 +135,8 @@ def load_confusion_matrix():
     order_en = [obesity_pt_rev[pt] for pt in obesity_order]
     idx = [classes.index(c) for c in order_en]
     cm = confusion_matrix(data['y_test'], model.predict(data['X_test']), labels=classes)
-    return cm[np.ix_(idx, idx)]
+    cm = cm[np.ix_(idx, idx)].astype(float)
+    return cm / cm.sum(axis=1, keepdims=True) * 100
 
 
 def _beeswarm_offsets(shap_col, row_width=0.45):
@@ -414,10 +415,10 @@ except Exception as e:
 
 st.divider()
 
-with st.expander('Desempenho do modelo'):
+with st.expander('IMPORTANTE: Sobre o Desempenho do Modelo'):
     st.caption(
         'A matriz abaixo mostra o desempenho do modelo no conjunto de teste. '
-        'Cada linha representa o nível real do paciente; cada coluna, o nível predito. '
+        'Cada linha representa o nível de obesidade real do paciente; cada coluna, o nível predito. '
         'Os valores na diagonal são as classificações corretas — quanto maior, mais confiável o modelo naquela categoria. '
         'Valores fora da diagonal indicam onde o modelo tende a confundir níveis próximos.'
     )
@@ -429,7 +430,7 @@ with st.expander('Desempenho do modelo'):
             y=obesity_order,
             colorscale=[[0.0, '#1F3A5F'], [0.5, '#2F6F73'], [1.0, '#E0A458']],
             text=cm_data,
-            texttemplate='%{text}',
+            texttemplate='%{text:.1f}%',
             textfont=dict(color='white', size=12),
             hovertemplate='Predição: %{x}<br>Realidade: %{y}<extra></extra>',
         ))
