@@ -40,7 +40,15 @@ Painel analítico com filtros por nível de obesidade, sexo biológico e faixa e
 | Dados | pandas, numpy |
 | Infraestrutura | Docker, Docker Compose |
 
-## Como executar localmente
+## Como acessar
+
+### Opção 1 — Aplicação publicada
+
+Acesse diretamente pelo navegador, sem instalação:
+
+**https://tech-challenge-4-hgqezrudhakanpuztvy9da.streamlit.app/**
+
+### Opção 2 — Execução local via Docker
 
 Pré-requisito: [Docker](https://www.docker.com/) instalado.
 
@@ -80,7 +88,3 @@ O comando acima treina o modelo, sobe a API e inicia a aplicação Streamlit. Ac
 │   └── requirements.txt
 └── docker-compose.yml
 ```
-
-## Aplicação
-
-**https://tech-challenge-4-hgqezrudhakanpuztvy9da.streamlit.app/**
