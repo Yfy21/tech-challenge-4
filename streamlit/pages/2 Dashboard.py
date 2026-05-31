@@ -416,11 +416,20 @@ except Exception as e:
 st.divider()
 
 with st.expander('IMPORTANTE: Sobre o Desempenho do Modelo'):
-    st.caption(
-        'A matriz abaixo mostra o desempenho do modelo no conjunto de teste. '
-        'Cada linha representa o nível de obesidade real do paciente; cada coluna, o nível predito. '
-        'Os valores na diagonal são as classificações corretas — quanto maior, mais confiável o modelo naquela categoria. '
-        'Valores fora da diagonal indicam onde o modelo tende a confundir níveis próximos.'
+    st.markdown(
+        'Cada linha representa um nível de obesidade **real**; cada coluna, o nível **predito**. '
+        'Os valores estão normalizados por linha: cada célula indica qual percentual dos pacientes '
+        'daquela categoria o modelo classificou em cada nível. '
+        'A diagonal mostra o percentual de acertos por classe — quanto maior, mais confiável o modelo naquela categoria. '
+        'Valores fora da diagonal indicam onde o modelo tende a confundir níveis próximos.\n\n'
+        '**Conclusão:** O modelo apresenta acurácia geral de 80% no conjunto de teste. '
+        'Seu desempenho é mais sólido nos extremos do espectro — '
+        'Obesidade III (99%) e Obesidade II (93%) são identificadas com alta confiabilidade, '
+        'assim como Abaixo do peso (88%). '
+        'A maior dificuldade está nas categorias intermediárias — '
+        'Sobrepeso II (64%) e Peso normal (65%) — onde as fronteiras entre classes são menos nítidas '
+        'e o modelo tende a confundir níveis adjacentes. '
+        'Para uso clínico, recomenda-se cautela especialmente nessas categorias.'
     )
     try:
         cm_data = load_confusion_matrix()
