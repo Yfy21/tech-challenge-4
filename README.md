@@ -14,6 +14,7 @@ Painel analítico com filtros por nível de obesidade, sexo biológico e faixa e
 - Análise estatística por fator de risco
 - Importância global das variáveis via SHAP
 - Impacto por nível de obesidade via beeswarm SHAP
+- Matriz de confusão com análise do desempenho do modelo por categoria
 
 ## Arquitetura
 
