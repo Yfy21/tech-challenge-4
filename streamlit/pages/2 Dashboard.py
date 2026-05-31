@@ -417,6 +417,7 @@ st.divider()
 
 with st.expander('**IMPORTANTE**: Sobre o Desempenho do Modelo'):
     st.markdown(
+        'O gráfico abaixo é uma **matriz de confusão** do desempenho preditivo do modelo. '
         'Cada linha representa um nível de obesidade **real**; cada coluna, o nível **predito**. '
         'Os valores estão normalizados por linha: cada célula indica qual percentual dos pacientes '
         'daquela categoria o modelo classificou em cada nível. '
