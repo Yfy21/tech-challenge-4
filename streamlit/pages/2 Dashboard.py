@@ -6,6 +6,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import shap
 import streamlit as st
+from sklearn.metrics import confusion_matrix
 
 st.set_page_config(layout="wide")
 st.markdown("""
@@ -123,6 +124,19 @@ def load_shap_data():
     if not isinstance(sv, list):
         sv = [sv[:, :, i] for i in range(sv.shape[2])]
     return X_t, list(feat_names), sv, list(classifier.classes_), data['X_test'], data['y_test']
+
+@st.cache_data
+def load_confusion_matrix():
+    with open(os.path.join(MODEL_DIR, 'model.pkl'), 'rb') as f:
+        model = pickle.load(f)
+    with open(os.path.join(MODEL_DIR, 'model_data.pkl'), 'rb') as f:
+        data = pickle.load(f)
+    classes = list(model.named_steps['classifier'].classes_)
+    order_en = [obesity_pt_rev[pt] for pt in obesity_order]
+    idx = [classes.index(c) for c in order_en]
+    cm = confusion_matrix(data['y_test'], model.predict(data['X_test']), labels=classes)
+    return cm[np.ix_(idx, idx)]
+
 
 def _beeswarm_offsets(shap_col, row_width=0.45):
     n = len(shap_col)
@@ -397,3 +411,41 @@ try:
 
 except Exception as e:
     st.warning(f'Não foi possível carregar os dados SHAP: {e}')
+
+st.divider()
+
+with st.expander('Desempenho do modelo'):
+    st.caption(
+        'A matriz abaixo mostra o desempenho do modelo no conjunto de teste. '
+        'Cada linha representa o nível real do paciente; cada coluna, o nível predito. '
+        'Os valores na diagonal são as classificações corretas — quanto maior, mais confiável o modelo naquela categoria. '
+        'Valores fora da diagonal indicam onde o modelo tende a confundir níveis próximos.'
+    )
+    try:
+        cm_data = load_confusion_matrix()
+        fig_cm = go.Figure(go.Heatmap(
+            z=cm_data,
+            x=obesity_order,
+            y=obesity_order,
+            colorscale=[[0.0, '#1F3A5F'], [0.5, '#2F6F73'], [1.0, '#E0A458']],
+            text=cm_data,
+            texttemplate='%{text}',
+            textfont=dict(color='white', size=12),
+            hovertemplate='Predição: %{x}<br>Realidade: %{y}<extra></extra>',
+        ))
+        fig_cm.update_layout(
+            xaxis=dict(title='Predição', tickangle=45,
+                       gridcolor='rgba(31,58,95,0.1)', linecolor='rgba(31,58,95,0.2)',
+                       tickfont=dict(color='#1F3A5F'), title_font=dict(color='#1F3A5F')),
+            yaxis=dict(title='Realidade', autorange='reversed',
+                       gridcolor='rgba(31,58,95,0.1)', linecolor='rgba(31,58,95,0.2)',
+                       tickfont=dict(color='#1F3A5F'), title_font=dict(color='#1F3A5F')),
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            font_color='#1F3A5F',
+            height=520,
+            margin=dict(t=20, b=20),
+        )
+        st.plotly_chart(fig_cm, use_container_width=True)
+    except Exception as e:
+        st.warning(f'Não foi possível carregar a matriz de confusão: {e}')
