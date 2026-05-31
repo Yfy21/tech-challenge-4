@@ -415,7 +415,7 @@ except Exception as e:
 
 st.divider()
 
-with st.expander('IMPORTANTE: Sobre o Desempenho do Modelo'):
+with st.expander('**IMPORTANTE**: Sobre o Desempenho do Modelo'):
     st.markdown(
         'Cada linha representa um nível de obesidade **real**; cada coluna, o nível **predito**. '
         'Os valores estão normalizados por linha: cada célula indica qual percentual dos pacientes '
